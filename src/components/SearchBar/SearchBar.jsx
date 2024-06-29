@@ -31,8 +31,8 @@ const getSuggestions = (value) => {
     );
 };
 
-function SearchBar() {
-    const [value, setValue] = useState('');
+function SearchBar({ onSearchBtnClick, defaultValue, setCity }) {
+    const [value, setValue] = useState(defaultValue);
     const [suggestions, setSuggestions] = useState([]);
 
     const onSuggestionsFetchRequested = ({ value }) => {
@@ -68,7 +68,10 @@ function SearchBar() {
                     renderSuggestion={renderSuggestion}
                     inputProps={inputProps}
                 />
-                <button className="bg-gray-500 text-white p-2 rounded-r-lg transition duration-300 ease-in-out transform hover:scale-110 ">
+                <button 
+                    className="bg-gray-500 text-white p-2 rounded-r-lg transition duration-300 ease-in-out transform hover:scale-110"
+                    onClick={ () => setCity(value) }
+                >
                     <FaSearch />
                 </button>
             </div>
