@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaBell, FaCloudSun } from 'react-icons/fa';
 
-function Header() {
+const Header = ()=> {
   return (
     <header className="bg-gray-200 p-4 shadow-md flex justify-between items-center">
       <div className="flex items-center">

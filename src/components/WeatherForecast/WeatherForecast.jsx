@@ -1,21 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ForecastCard from '../ForecastCard/ForecastCard';
 
 
-function WeatherForecast() {
-  const forecastData = [
-    { day: 'QUARTA-FEIRA', weather: 'Céu Limpo', temp: '28.0°C', wind: '3.6 m/s', humidity: '71%', feelsLike: '28°C', altitude: '6 m' },
-    { day: 'QUINTA-FEIRA', weather: 'Céu Limpo', temp: '28.0°C', wind: '3.6 m/s', humidity: '71%', feelsLike: '28°C', altitude: '6 m' },
-    { day: 'SEXTA-FEIRA', weather: 'Céu Limpo', temp: '28.0°C', wind: '3.6 m/s', humidity: '71%', feelsLike: '28°C', altitude: '6 m' },
-    { day: 'SÁBADO', weather: 'Céu Limpo', temp: '28.0°C', wind: '3.6 m/s', humidity: '71%', feelsLike: '28°C', altitude: '6 m' },
-    { day: 'DOMINGO', weather: 'Céu Limpo', temp: '28.0°C', wind: '3.6 m/s', humidity: '71%', feelsLike: '28°C', altitude: '6 m' },
-    { day: 'SEGUNDA-FEIRA', weather: 'Céu Limpo', temp: '28.0°C', wind: '3.6 m/s', humidity: '71%', feelsLike: '28°C', altitude: '6 m' },
-  ];
+const  WeatherForecast =  ({forecastData}) => {
 
+  const [forecast, setForecast] = useState(forecastData.forecastday)
+  console.log(forecast); 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-      {forecastData.map((data, index) => (
-        <ForecastCard key={index} data={data} />
+      {forecast.map((data, index) => (
+        <ForecastCard key={index} data={data.hour[0]} date={data.date} />
       ))}
     </div>
   );

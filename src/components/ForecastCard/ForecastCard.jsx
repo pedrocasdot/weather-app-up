@@ -1,22 +1,22 @@
 import React from 'react';
-import { FaSun } from 'react-icons/fa';
 
-function ForecastCard({ data }) {
+const ForecastCard = ({ data, date }) => {
+
+    const icon = 'https:' + data.condition.icon.replace('64x64', '128x128');
+    const daysOfWeek = ['Domingo', 'Segunda-Feira', 'Terça-Feria', 'Quarta-Feria', 'Quinta-Feria', 'Sexa-Feria', 'Sábado'];
+    const positionDay = new Date(date).getDay();
     return (
         <div className="bg-white p-4 rounded-lg shadow-md ">
             <div className='text-center'>
-                <h3 className="font-bold">{data.day}</h3>
-                <FaSun className="w-8 h-8 mx-auto text-yellow-500" />
+                <h3 className="font-bold">{daysOfWeek[positionDay]}</h3>
+                <img src={icon} className="mx-auto" />
             </div>
 
-            {/* <div className='flex flex-'> */}
-                <p>{data.weather}</p>
-                <p>Temperatura: {data.temp}</p>
-                <p>Vento: {data.wind}</p>
-                <p>Humidade: {data.humidity}</p>
-                <p>Sensação Térmica: {data.feelsLike}</p>
-                <p>Altitude: {data.altitude}</p>
-            {/* </div> */}
+            <p>Clima: {data.condition.text}</p>
+            <p>Temperatura: {data.temp_c}°C</p>
+            <p>Vento: {data.wind_kph} km/h</p>
+            <p>Humidade: {data.humidity}%</p>
+            <p>Sensação Térmica: {data.feelslike_c}°C</p>
         </div>
     );
 }
