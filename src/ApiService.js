@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const getUrl = (param) => {
-    return `https://api.weatherapi.com/v1/forecast.json?key=4278fa18d57947ee9f7213303242004&q=${param}&days=8&aqi=no&alerts=yes&lang=pt`;
+  return `https://api.weatherapi.com/v1/forecast.json?key=4278fa18d57947ee9f7213303242004&q=${param}&days=8&aqi=no&alerts=yes&lang=pt`;
+}
+const getUrlSuggestions = (param) => {
+  return `http://api.weatherapi.com/v1/search.json?key=4278fa18d57947ee9f7213303242004&q=${param}`;
 }
 
 export  const getWeatherData = async (param) =>{
@@ -19,6 +22,23 @@ export  const getWeatherData = async (param) =>{
         throw new Error(error.response.data);
       }
 };
+
+export const getSuggestionsFromApi = async(city) => {
+  try {
+    const API_URL = getUrlSuggestions(city);
+    const response = await axios.get(`${API_URL}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error.response.data);
+  }
+};
+
 
 
 export const getCurrentLocation =  () => {

@@ -1,33 +1,17 @@
 import React, { useState } from 'react';
 import Autosuggest from 'react-autosuggest';
 import { FaSearch, FaShareAlt, FaMapMarkerAlt, FaBalanceScale } from 'react-icons/fa';
-import { getWeatherData } from '../../ApiService';
+import { getWeatherData, getSuggestionsFromApi } from '../../ApiService';
 
-const cities = [
-    { name: 'Luanda, Angola' },
-    { name: 'Bengo, Angola' },
-    { name: 'Benguela, Angola' },
-    { name: 'Bié, Angola' },
-    { name: 'Cabinda, Angola' },
-    { name: 'Cuando Cubango, Angola' },
-    { name: 'Cuanza Norte, Angola' },
-    { name: 'Cuanza Sul, Angola' },
-    { name: 'Cunene, Angola' },
-    { name: 'Huambo, Angola' },
-    { name: 'Huíla, Angola' },
-    { name: 'Lunda Norte, Angola' },
-    { name: 'Lunda Sul, Angola' },
-    { name: 'Malanje, Angola' },
-    { name: 'Moxico, Angola' },
-    { name: 'Namibe, Angola' },
-    { name: 'Uíge, Angola' },
-];
 
-const getSuggestions = (value) => {
+const getSuggestions = (value, cities) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
-
-    return inputLength === 0 ? [] : cities.filter(city =>
+    let newCities = [];
+    cities.forEach(suggest => {
+        newCities.push( {name : suggest.name + ', ' + suggest.country});
+    });
+    return inputLength === 0 ? [] : newCities.filter(city =>
         city.name.toLowerCase().includes(inputValue)
     );
 };
@@ -60,6 +44,7 @@ const Modal = ({ isOpen, onClose, city1, city2, data1, data2 }) => {
 
 const SearchBar = ({ onSearchBtnClick, defaultValue, setCity }) => {
     const [value, setValue] = useState(defaultValue);
+    const [cities, setCities] = useState([]);
     const [value2, setValue2] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [suggestions2, setSuggestions2] = useState([]);
@@ -67,16 +52,21 @@ const SearchBar = ({ onSearchBtnClick, defaultValue, setCity }) => {
     const [city1Data, setCity1Data] = useState(null);
     const [city2Data, setCity2Data] = useState(null);
 
-    const onSuggestionsFetchRequested = ({ value }) => {
-        setSuggestions(getSuggestions(value));
+    const onSuggestionsFetchRequested = async({ value }) => {
+        const suggestions = await getSuggestionsFromApi(value);
+        setCities(suggestions);
+        setSuggestions(getSuggestions(value, suggestions));
     };
+    
 
     const onSuggestionsClearRequested = () => {
         setSuggestions([]);
     };
 
-    const onSuggestionsFetchRequested2 = ({ value }) => {
-        setSuggestions2(getSuggestions(value));
+    const onSuggestionsFetchRequested2 = async ({ value }) => {
+        const suggestions = await getSuggestionsFromApi(value);
+        setCities(suggestions);
+        setSuggestions2(getSuggestions(value, suggestions));
     };
 
     const onSuggestionsClearRequested2 = () => {
